@@ -1,6 +1,12 @@
 # Mobile API README
 =======================
 
+# Deployed to heroku 
+https://movieapp3.herokuapp.com/admin
+
+# BASE_URL
+https://movieapp3.herokuapp.com/
+
 # First Screen Verifying if user exist or create
 	{BASE_URL}/api/v1/user/verify
 	body params
@@ -33,25 +39,5 @@
 	}
 -----------------------
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# Screencast video for admin
+https://www.screencast.com/t/D9y6RT6Mi7
