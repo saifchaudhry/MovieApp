@@ -1,5 +1,5 @@
 name: movie-app
-'on':
+on:
   pull_request:
     types:
       - closed
