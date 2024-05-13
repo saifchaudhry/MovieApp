@@ -1,0 +1,11 @@
+name: movie-app
+on:
+  pull_request:
+    types: [closed]
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+          run: echo "request completed!"
