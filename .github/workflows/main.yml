@@ -1,6 +1,6 @@
 name: movie-app
 on:
-  push
+  pull_request
 jobs:
   my-job:
     runs-on: ubuntu-latest
