@@ -8,4 +8,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-          run: echo "request completed!"
+
+      - name: Output message
+        run: echo "Request completed!"
