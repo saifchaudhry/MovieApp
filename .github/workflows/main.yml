@@ -1,9 +1,0 @@
-name: movie-app
-on:
-  pull_request
-jobs:
-  my-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Output message
-        run: echo "Request completed!"
