@@ -2,7 +2,7 @@ name: RSpec Tests
 
 on:
   pull_request:
-    types: [assigned]
+    types: [opened, assigned]
 
 jobs:
   test:
