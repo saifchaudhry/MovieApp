@@ -2,7 +2,7 @@ name: RSpec Tests
 
 on:
   pull_request:
-    types: [assigned]
+    types: [opened]
 
 jobs:
   test:
@@ -15,7 +15,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.5.3
+          ruby-version: 2.6.6
           
       - name: Install dependencies
         run: bundle install 

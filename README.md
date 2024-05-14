@@ -41,3 +41,4 @@ https://movieapp3.herokuapp.com/
 
 # Screencast video for admin
 https://www.screencast.com/t/D9y6RT6Mi7
+
