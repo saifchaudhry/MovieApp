@@ -1,7 +1,8 @@
 name: RSpec Tests
 
 on:
-  push
+  pull_request:
+    types: [opened, assigned, synchronize]
 
 jobs:
   test:
