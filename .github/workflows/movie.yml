@@ -3,7 +3,6 @@ name: RSpec Tests
 on:
   pull_request:
     types: [opened]
-
 jobs:
   test:
     runs-on: ubuntu-latest
