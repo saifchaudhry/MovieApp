@@ -20,5 +20,8 @@ jobs:
       - name: Install dependencies
         run: bundle install 
 
+      - name: Create test database
+        run: bundle exec rake db:create db:schema:load --trace
+
       - name: Run RSpec
         run: bundle exec rspec
