@@ -13,8 +13,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    container:
-      image: timbru31/ruby-node:latest
+    # container:
+    #   image: timbru31/ruby-node:latest
 
     services:
       postgres:
