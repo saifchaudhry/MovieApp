@@ -35,15 +35,8 @@ jobs:
         with:
           ruby-version: 2.6.6
      
-     - name: Install dependencies
-        run: bundle install
-
-    # - name: Setup app dependencies
-    #   run: |
-    #     gem install bundler -v 1.17.3 --no-document
-    #     bundle install --jobs 4 --retry 3
-    #     npm install
-    #     npm install -g yarn
+    - name: Install dependencies
+      run: bundle install
 
     - name: Setup database
       env:
