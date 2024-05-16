@@ -28,37 +28,37 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v1
+      - name: Checkout code
+          uses: actions/checkout@v1
 
-    - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.6.6
-     
-    - name: Install dependencies
-      run: bundle install
+      - name: Setup Ruby
+          uses: ruby/setup-ruby@v1
+          with:
+            ruby-version: 2.6.6
+      
+      - name: Install dependencies
+        run: bundle install
 
-    - name: Setup database
-      env:
-        RAILS_ENV: test
-        POSTGRES_HOST: postgres
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_DB: ci_db_test
-        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-      run: |
-        cp config/database.yml.ci config/database.yml
-        bundle exec rails db:create
-        bundle exec rails db:schema:load
+      - name: Setup database
+        env:
+          RAILS_ENV: test
+          POSTGRES_HOST: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ci_db_test
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: |
+          cp config/database.yml.ci config/database.yml
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
 
-    - name: Run rspec
-      env:
-        RAILS_ENV: test
-        POSTGRES_HOST: postgres
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_DB: ci_db_test
-        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-        SELENIUM_URL: 'http://chrome:4444/wd/hub'
-      run: bundle exec rspec
+      - name: Run rspec
+        env:
+          RAILS_ENV: test
+          POSTGRES_HOST: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ci_db_test
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+          SELENIUM_URL: 'http://chrome:4444/wd/hub'
+        run: bundle exec rspec
