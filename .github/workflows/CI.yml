@@ -1,17 +1,14 @@
 on:
-  push:
-    branches:
-    - master
   pull_request:
-    branches:
-    - master
-    - development
-    - release
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    # container:
+    #   image: timbru31/ruby-node:latest
 
     services:
       postgres:
@@ -20,10 +17,11 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: ci_db_test
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
+        
     steps:
       - name: Checkout code
         uses: actions/checkout@v1
@@ -39,7 +37,7 @@ jobs:
       - name: Setup database
         env:
           RAILS_ENV: test
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: postgres
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: ci_db_test
@@ -52,7 +50,7 @@ jobs:
       - name: Run rspec
         env:
           RAILS_ENV: test
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: postgres
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: ci_db_test
