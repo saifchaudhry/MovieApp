@@ -1,7 +1,7 @@
 version: 2.1
 
-jobs:
-  build:
+executors:
+  ruby-executor:
     docker:
       - image: circleci/ruby:2.6.6
       - image: circleci/postgres:11
@@ -10,6 +10,9 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: ci_db_test
 
+jobs:
+  build:
+    executor: ruby-executor
     steps:
       - checkout
 
@@ -19,6 +22,12 @@ jobs:
 
       - run:
           name: Setup Database
+          environment:
+            RAILS_ENV: test
+            POSTGRES_HOST: localhost
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: ci_db_test
           command: |
             cp config/database.yml.ci config/database.yml
             bundle exec rails db:create
@@ -26,11 +35,17 @@ jobs:
 
       - run:
           name: Run RSpec
+          environment:
+            RAILS_ENV: test
+            POSTGRES_HOST: localhost
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: ci_db_test
           command: bundle exec rspec
 
 workflows:
   version: 2
-  build:
+  test:
     jobs:
       - build:
           filters:
@@ -39,4 +54,3 @@ workflows:
                 - master
                 - development
                 - release
-                - feature/*
