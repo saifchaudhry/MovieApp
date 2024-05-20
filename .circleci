@@ -1,0 +1,38 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.6.6-node-browsers
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ci_db_test
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Dependencies
+          command: bundle install
+
+      - run:
+          name: Setup Database
+          command: |
+            cp config/database.yml.ci config/database.yml
+            bundle exec rails db:create
+            bundle exec rails db:schema:load
+
+      - run:
+          name: Run RSpec
+          command: bundle exec rspec
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
