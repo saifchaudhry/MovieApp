@@ -1,22 +1,28 @@
 version: '2.1'
 orbs:
-  ruby: circleci/ruby
+  ruby: circleci/ruby@2.6.6
 jobs:
   build:
     docker:
-      - image: cimg/ruby:2.6.6-node
+      - image: cimg/ruby:2.7-node
     steps:
       - checkout
       - ruby/install-deps
+      - node/install-packages:
+          cache-key: yarn.lock
+          pkg-manager: yarn
   checking:
     docker:
-      - image: cimg/ruby:2.6.6-node
+      - image: cimg/ruby:2.7-node
     steps:
       - checkout
       - ruby/install-deps
+      - ruby/rubocop-check:
+          format: progress
+          label: Inspecting with Rubocop
   test:
     docker:
-      - image: cimg/ruby:2.6.6-node
+      - image: cimg/ruby:2.7-node
       - environment:
           POSTGRES_DB: rails_blog_test
           POSTGRES_PASSWORD: ''
@@ -33,6 +39,9 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
+      - node/install-packages:
+          cache-key: yarn.lock
+          pkg-manager: yarn
       - run:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
           name: Wait for DB
