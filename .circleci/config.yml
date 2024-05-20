@@ -24,8 +24,8 @@ jobs:
             bundle exec rails db:schema:load
 
       - run:
-          name: Run RSpec
-          command: bundle exec rspec
+          command: "bundle exec rspec --order random"
+          name: Run rspec tests
 
 workflows:
   version: 2
