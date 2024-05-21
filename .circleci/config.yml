@@ -3,6 +3,7 @@ version: 2.1
 
   jobs:
 
+  spec_test:
     docker:
       - image: cimg/base:2022.05
       
@@ -43,3 +44,4 @@ version: 2.1
 workflows:
    rspec test: 
      jobs:
+      - spec_test
