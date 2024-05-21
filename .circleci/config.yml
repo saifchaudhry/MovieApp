@@ -2,7 +2,6 @@ version: 2.1
 executors:
   default_image:
     docker:
-    - image: cimg/base:current
     - image: cimg/ruby:2.6.6
 jobs:
   build:
