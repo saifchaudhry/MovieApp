@@ -19,9 +19,11 @@ jobs:
     - run:
         name: Install dependencies
         command: bundle install
-    - run: mv config/database.yml.ci config/database.yml
-    - run: rails db:create
-    - run: rails db:setup
+    - run: 
+        command: |
+          mv config/database.yml.ci config/database.yml
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
 
 workflows:
   main:
