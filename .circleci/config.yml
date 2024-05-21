@@ -1,24 +1,45 @@
-# CircleCI configuration file
+
 version: 2.1
 
-jobs:
-  # Job one with a unique name
-  say_hello:
-    docker:
-     - image: cimg/base:2022.05
-    steps:
-      - run: echo "Say hello to YAML!"
-  # Job two with a unique name
-  say_goodbye:
-    docker:
-     - image: cimg/base:2022.05
-    steps:
-      - run: echo "Say goodbye to YAML!"
+  jobs:
 
+    docker:
+      - image: cimg/base:2022.05
+      
+      steps:
+        - run:
+            name: Install Dependencies
+            command: bundle install
+
+        - run:
+            name: Setup Database
+            environment:
+              RAILS_ENV: test
+              POSTGRES_HOST: localhost
+              POSTGRES_USER: postgres
+              POSTGRES_PASSWORD: postgres
+              POSTGRES_DB: ci_db_test
+            command: |
+              cp config/database.yml.ci config/database.yml
+              bundle exec rails db:create
+              bundle exec rails db:schema:load
+
+        - run:
+            name: Run RSpec
+            environment:
+              RAILS_ENV: test
+              POSTGRES_HOST: localhost
+              POSTGRES_USER: postgres
+              POSTGRES_PASSWORD: postgres
+              POSTGRES_DB: ci_db_test
+            command: bundle exec rspec
+
+        - image: circleci/postgres:11
+          environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: ci_db_test
+    
 workflows:
-  # Name of workflow
-  hello_and_goodbye:
-    # List of jobs that will run
-    jobs:
-      - say_hello
-      - say_goodbye
+   rspec test: 
+     jobs:
