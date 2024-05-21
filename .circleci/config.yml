@@ -6,6 +6,7 @@ jobs:
       - image: cimg/base:2022.05
       
       steps:
+        - checkout
         - run:
             name: Install Dependencies
             command: bundle install
@@ -40,6 +41,5 @@ jobs:
             POSTGRES_DB: ci_db_test
     
 workflows:
-   rspec test: 
      jobs:
       - spec_test
