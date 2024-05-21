@@ -3,6 +3,7 @@ executors:
   default_image:
     docker:
     - image: cimg/base:current
+    - image: circleci/ruby:2.6.6
 jobs:
   build:
     environment:
@@ -16,9 +17,6 @@ jobs:
     executor: default_image
     steps:
     - checkout
-    - run:
-          name: Install Bundler
-          command: gem install bundler -v 1.14.5
     - run:
         name: Install dependencies
         command: bundle install
