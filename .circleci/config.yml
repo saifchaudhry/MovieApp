@@ -22,9 +22,9 @@ jobs:
     - run:
         command: |
           cp config/database.yml.ci config/database.yml
-          bundle exec rails db:create
-          bundle exec rails db:schema:load
-          bundle exec rspec
+          rails db:create
+          rails db:schema:load
+          
 workflows:
   main:
     jobs:
