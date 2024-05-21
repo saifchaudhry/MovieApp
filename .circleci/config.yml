@@ -3,7 +3,7 @@ executors:
   default_image:
     docker:
     - image: cimg/base:current
-    - image: circleci/ruby:2.6.6
+    - image: cimg/ruby:2.6.6
 jobs:
   build:
     environment:
