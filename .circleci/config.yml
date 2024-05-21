@@ -1,56 +1,31 @@
 version: 2.1
-
+executors:
+  default_image:
+    docker:
+    - image: cimg/base:current
 jobs:
-  Installing_dependencies:
-    docker:
-      - image: cimg/base:2022.05
-      steps:
-        - checkout
-        - run:
-            name: Install Dependencies
-            command: bundle install
-
-  setup_database:
-    docker:
-      - image: cimg/base:2022.05
-      steps:
-        - checkout
-        - run:
-            name: Setup Database
-            environment:
-              RAILS_ENV: test
-              POSTGRES_HOST: localhost
-              POSTGRES_USER: postgres
-              POSTGRES_PASSWORD: postgres
-              POSTGRES_DB: ci_db_test
-            command: |
-              cp config/database.yml.ci config/database.yml
-              bundle exec rails db:create
-              bundle exec rails db:schema:load
-
-  rspec_test:
-    docker:
-      - image: cimg/base:2022.05
-      steps:
-        - checkout
-        - run:
-            name: Run RSpec
-            environment:
-              RAILS_ENV: test
-              POSTGRES_HOST: localhost
-              POSTGRES_USER: postgres
-              POSTGRES_PASSWORD: postgres
-              POSTGRES_DB: ci_db_test
-            command: bundle exec rspec
-
-        - image: circleci/postgres:11
-          environment:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_DB: ci_db_test
-    
+  build:
+    environment:
+      RAILS_ENV: test
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ci_db_test
+      POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+      SELENIUM_URL: http://chrome:4444/wd/hub
+    executor: default_image
+    steps:
+    - checkout
+    - run:
+        name: Install dependencies
+        command: bundle install
+    - run:
+        command: |
+          cp config/database.yml.ci config/database.yml
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+          bundle exec rspec
 workflows:
-     jobs:
-      - Installing_dependencies
-      - setup_database
-      - spec_test
+  main:
+    jobs:
+    - build
