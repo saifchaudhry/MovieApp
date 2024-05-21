@@ -6,6 +6,8 @@ executors:
     - image: cimg/ruby:2.6.6
 jobs:
   build:
+   docker:
+      - image: cimg/ruby:2.6.6
     environment:
       RAILS_ENV: test
       POSTGRES_HOST: localhost
