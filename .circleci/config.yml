@@ -18,7 +18,9 @@ jobs:
     - checkout
     - run:
         name: Install dependencies
-        command: bundle install
+        command: |
+          gem install bundler
+          bundle install
     - run:
         command: |
           cp config/database.yml.ci config/database.yml
