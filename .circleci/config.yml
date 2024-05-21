@@ -6,8 +6,7 @@ executors:
     - image: cimg/ruby:2.6.6
 jobs:
   build:
-   docker:
-      - image: cimg/ruby:2.6.6
+    executor: default_image
     environment:
       RAILS_ENV: test
       POSTGRES_HOST: localhost
@@ -16,7 +15,6 @@ jobs:
       POSTGRES_DB: ci_db_test
       POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
       SELENIUM_URL: http://chrome:4444/wd/hub
-    executor: default_image
     steps:
     - checkout
     - run:
