@@ -20,11 +20,11 @@ jobs:
         name: Install dependencies
         command: bundle install
     - run:
-        command: |
-          cp config/database.yml.ci config/database.yml
-          rails db:create
-          rails db:schema:load
-          
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: rails db:schema
 workflows:
   main:
     jobs:
