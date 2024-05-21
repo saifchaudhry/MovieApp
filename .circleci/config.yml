@@ -20,7 +20,7 @@ jobs:
         name: Install dependencies
         command: bundle install
     - run: mv config/database.yml.ci config/database.yml
-    - run: RAILS_ENV=test rails db:create
+    - run: rails db:create
     - run: rails db:setup
 
 workflows:
