@@ -1,16 +1,20 @@
 version: 2.1
 
 jobs:
-  spec_test:
+  Installing_dependencies:
     docker:
       - image: cimg/base:2022.05
-      
       steps:
         - checkout
         - run:
             name: Install Dependencies
             command: bundle install
 
+  setup_database:
+    docker:
+      - image: cimg/base:2022.05
+      steps:
+        - checkout
         - run:
             name: Setup Database
             environment:
@@ -24,6 +28,11 @@ jobs:
               bundle exec rails db:create
               bundle exec rails db:schema:load
 
+  rspec_test:
+    docker:
+      - image: cimg/base:2022.05
+      steps:
+        - checkout
         - run:
             name: Run RSpec
             environment:
@@ -42,4 +51,6 @@ jobs:
     
 workflows:
      jobs:
+      - Installing_dependencies
+      - setup_database
       - spec_test
