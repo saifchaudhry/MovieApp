@@ -2,7 +2,7 @@ version: 2.1
 executors:
   default_image:
     docker:
-    - image: cimg/ruby:2.6.6
+    - image: cimg/ruby:2.6.6-node
 jobs:
   build:
     executor: default_image
