@@ -32,7 +32,8 @@ jobs:
           name: Setup Database
           command: |
             cp config/database.yml.ci config/database.yml
-            bundle exec rails db:create
+            PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -c "DROP DATABASE IF EXISTS $POSTGRES_DB;"
+            PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB ENCODING 'unicode';"
             bundle exec rails db:schema:load
     - run:
           name: Run RSpec
