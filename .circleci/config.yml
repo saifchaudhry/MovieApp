@@ -3,7 +3,7 @@ executors:
   default_image:
     docker:
     - image: cimg/ruby:2.6.6-node
-    - image: circleci/postgres:11.9
+    - image: circleci/postgres
       environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -17,6 +17,7 @@ jobs:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ci_db_test
+      POSTGRES_PORT: 5432
       POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
       SELENIUM_URL: http://chrome:4444/wd/hub
     steps:
