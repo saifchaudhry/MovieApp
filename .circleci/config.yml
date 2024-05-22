@@ -14,7 +14,7 @@ jobs:
     executor: default_image
     environment:
       RAILS_ENV: test
-      POSTGRES_HOST: 127.0.0.1
+      POSTGRES_HOST: localhost
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ci_db_test
@@ -22,12 +22,6 @@ jobs:
       SELENIUM_URL: http://chrome:4444/wd/hub
     steps:
     - checkout
-    - run:
-          name: Install Dockerize
-          command: |
-            if ! command -v dockerize &> /dev/null; then
-              curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv
-            fi
     - run:
         name: Install dependencies
         command: bundle install
@@ -38,8 +32,7 @@ jobs:
           name: Setup Database
           command: |
             cp config/database.yml.ci config/database.yml
-            PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -c "DROP DATABASE IF EXISTS $POSTGRES_DB;"
-            PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB ENCODING 'unicode';"
+            bundle exec rails db:create
             bundle exec rails db:schema:load
     - run:
           name: Run RSpec
