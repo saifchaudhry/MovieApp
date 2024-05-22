@@ -11,8 +11,6 @@ executors:
 
 jobs:
   build:
-    docker:
-    - image: cimg/ruby:2.6.6-node
     executor: default_image
     environment:
       RAILS_ENV: test
@@ -20,7 +18,6 @@ jobs:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ci_db_test
-      POSTGRES_PORT: 5432
       POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
       SELENIUM_URL: http://chrome:4444/wd/hub
     steps:
@@ -28,9 +25,6 @@ jobs:
     - run:
         name: Install dependencies
         command: bundle install
-    - run:
-          name: Wait for PostgreSQL to be ready
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
     - run:
           name: Setup Database
           command: |
