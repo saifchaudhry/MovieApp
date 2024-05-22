@@ -3,12 +3,18 @@ executors:
   default_image:
     docker:
     - image: cimg/ruby:2.6.6-node
+    - image: circleci/postgres:11.9
+      environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ci_db_test
+          POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
   build:
     executor: default_image
     environment:
       RAILS_ENV: test
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: 127.0.0.1
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ci_db_test
@@ -19,11 +25,9 @@ jobs:
     - run:
         name: Install dependencies
         command: bundle install
-    - run: 
-        command: |
-          mv config/database.yml.ci config/database.yml
-          bundle exec rails db:create
-          bundle exec rails db:schema:load
+    - run: mv config/database.yml.ci config/database.yml
+    - run: rails db:create
+    - run: rails db:setup
 
 workflows:
   main:
