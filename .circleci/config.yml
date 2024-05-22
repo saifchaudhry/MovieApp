@@ -3,7 +3,7 @@ executors:
   default_image:
     docker:
     - image: cimg/ruby:2.6.6-node
-    - image: circleci/postgres:11.9
+    - image: circleci/postgres:9.6
       environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
