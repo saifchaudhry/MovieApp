@@ -23,9 +23,6 @@ jobs:
     steps:
     - checkout
     - run:
-          name: Install Dockerize
-          command: curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv
-    - run:
         name: Install dependencies
         command: bundle install
     - run:
@@ -35,8 +32,7 @@ jobs:
           name: Setup Database
           command: |
             cp config/database.yml.ci config/database.yml
-            PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -c "DROP DATABASE IF EXISTS $POSTGRES_DB;"
-            PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB ENCODING 'unicode';"
+            bundle exec rails db:create
             bundle exec rails db:schema:load
     - run:
           name: Run RSpec
