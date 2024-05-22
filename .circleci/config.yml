@@ -3,7 +3,7 @@ executors:
   default_image:
     docker:
     - image: cimg/ruby:2.6.6-node
-    - image: circleci/postgres:9.6
+    - image: circleci/postgres:11
       environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -25,6 +25,9 @@ jobs:
     - run:
         name: Install dependencies
         command: bundle install
+    - run:
+          name: Wait for PostgreSQL to be ready
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
     - run:
           name: Setup Database
           command: |
