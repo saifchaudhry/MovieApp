@@ -4,46 +4,40 @@ executors:
   default_image:
     docker:
       - image: cimg/ruby:2.6.6-node
+        environment:
+          RAILS_ENV: test
+          POSTGRES_HOST: localhost
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ci_db_test
 
 jobs:
   build:
     docker:
       - image: cimg/ruby:2.6.6-node
-      - image: circleci/postgres:11.14
         environment:
+          RAILS_ENV: test
+          POSTGRES_HOST: 127.0.0.1
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: ci_db_test
-    environment:
-      RAILS_ENV: test
-      POSTGRES_HOST: 127.0.0.1
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: ci_db_test
-      POSTGRES_PORT: 5432
-      SELENIUM_URL: http://chrome:4444/wd/hub
+          POSTGRES_PORT: 5432
+          SELENIUM_URL: http://chrome:4444/wd/hub
+      - image: circleci/postgres:11.14
     steps:
       - checkout
-
       - run:
           name: Install Dockerize
           command: |
             if ! command -v dockerize &> /dev/null; then
               curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv
             fi
-
-      - run:
-          name: Install Bundler
-          command: gem install bundler -v 1.14.5
-
       - run:
           name: Install Dependencies
           command: bundle install
-
       - run:
           name: Wait for PostgreSQL
           command: dockerize -wait tcp://127.0.0.1:5432 -timeout 1m
-
       - run:
           name: Setup Database
           command: |
@@ -51,12 +45,12 @@ jobs:
             PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -c "DROP DATABASE IF EXISTS $POSTGRES_DB;"
             PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB ENCODING 'unicode';"
             bundle exec rails db:schema:load
-
       - run:
           name: Run RSpec
           command: bundle exec rspec
 
 workflows:
+  version: 2
   main:
     jobs:
       - build
