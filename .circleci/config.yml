@@ -30,6 +30,9 @@ jobs:
             cp config/database.yml.ci config/database.yml
             bundle exec rails db:create
             bundle exec rails db:schema:load
+    - run:
+          name: Run RSpec
+          command: bundle exec rspec
 
 workflows:
   main:
