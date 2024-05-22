@@ -1,51 +1,62 @@
 version: 2.1
+
 executors:
   default_image:
     docker:
-    - image: cimg/ruby:2.6.6-node
-    - image: circleci/postgres:11.14
-      environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: ci_db_test
+      - image: cimg/ruby:2.6.6-node
 
 jobs:
   build:
-    executor: default_image
+    docker:
+      - image: cimg/ruby:2.6.6-node
+      - image: circleci/postgres:11.14
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ci_db_test
     environment:
       RAILS_ENV: test
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: 127.0.0.1
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ci_db_test
-      POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+      POSTGRES_PORT: 5432
       SELENIUM_URL: http://chrome:4444/wd/hub
     steps:
-    - checkout
-    - run:
+      - checkout
+
+      - run:
           name: Install Dockerize
           command: |
             if ! command -v dockerize &> /dev/null; then
               curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv
             fi
-    - run:
-        name: Install dependencies
-        command: bundle install
-    - run:
-          name: Wait for PostgreSQL to be ready
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-    - run:
+
+      - run:
+          name: Install Bundler
+          command: gem install bundler -v 1.14.5
+
+      - run:
+          name: Install Dependencies
+          command: bundle install
+
+      - run:
+          name: Wait for PostgreSQL
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 1m
+
+      - run:
           name: Setup Database
           command: |
             cp config/database.yml.ci config/database.yml
             PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -c "DROP DATABASE IF EXISTS $POSTGRES_DB;"
             PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB ENCODING 'unicode';"
             bundle exec rails db:schema:load
-    - run:
+
+      - run:
           name: Run RSpec
           command: bundle exec rspec
 
 workflows:
-  master:
+  main:
     jobs:
-    - build
+      - build
