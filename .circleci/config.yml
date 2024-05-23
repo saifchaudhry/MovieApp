@@ -11,7 +11,7 @@ executors:
           POSTGRES_DB: ci_db_test
 
 jobs:
-  build:
+  test_cases:
     docker:
       - image: cimg/ruby:2.6.6-node
       - image: circleci/postgres:11.14
@@ -23,12 +23,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Dockerize
-          command: |
-            if ! command -v dockerize &> /dev/null; then
-              curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv
-            fi
-      - run:
           name: Install Dependencies
           command: bundle install 
       - run:
@@ -38,16 +32,7 @@ jobs:
           name: Setup Database
           command: |
             cp config/database.yml.ci config/database.yml
-            docker run --rm \
-              -e PGPASSWORD=$POSTGRES_PASSWORD \
-              --network host \
-              postgres:11.14 \
-              psql -h localhost -U $POSTGRES_USER -c "DROP DATABASE IF EXISTS $POSTGRES_DB;"
-            docker run --rm \
-              -e PGPASSWORD=$POSTGRES_PASSWORD \
-              --network host \
-              postgres:11.14 \
-              psql -h localhost -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB ENCODING 'unicode';"
+            bundle exec rails db:create
             bundle exec rails db:schema:load
       - run:
           name: Run RSpec
@@ -55,6 +40,6 @@ jobs:
 
 workflows:
   version: 2
-  main:
+  master:
     jobs:
-      - build
+      - test_cases
