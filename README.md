@@ -17,7 +17,7 @@ https://movieapp3.herokuapp.com/
 
 # Get all movies
 	{BASE_URL}/api/v1/movie/
----------------------------
+-----------------------
 
 # Get specific movie detail
 	{BASE_URL}/api/v1/movie/:movie_name
