@@ -1,59 +1,38 @@
 pipeline {
     agent any
     environment {
-        RAILS_ENV = 'test'
         POSTGRES_USER = 'postgres'
         POSTGRES_PASSWORD = 'postgres'
         POSTGRES_DB = 'ci_db_test'
+        RAILS_ENV = 'test'
         POSTGRES_HOST = '127.0.0.1'
-        SELENIUM_URL = 'http://chrome:4444/wd/hub'
-        RAILS_MASTER_KEY = credentials('rails_master_key_test')
-    }
-    options {
-        disableConcurrentBuilds abortPrevious: true
+        POSTGRES_PORT = '5432'
     }
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git 'https://github.com/saifchaudhry/MovieApp.git'
             }
         }
         stage('Install Dependencies') {
             steps {
-                script {
-                    withRbenv('3.1.0') {
-                        sh 'bundle install'
-                    }
-                }
+                sh 'bundle install'
             }
         }
         stage('Setup Database') {
             steps {
-                script {
-                    withRbenv('3.1.0') {
-                        sh '''
-                        cp config/database.yml.ci config/database.yml
-                        bundle exec rails db:create
-                        bundle exec rails db:schema:load
-                        '''
-                    }
-                }
+                sh '''
+                cp config/database.yml.ci config/database.yml
+                bundle exec rails db:create
+                bundle exec rails db:schema:load
+                '''
             }
         }
         stage('Run RSpec') {
             steps {
-                script {
-                    withRbenv('3.1.0') {
-                        sh 'bundle exec rspec'
-                    }
-                }
+                sh 'bundle exec rspec'
             }
         }
     }
-    post {
-        always {
-            junit allowEmptyResults: true, testResults: 'coverage/junit.xml'
-            deleteDir()
-        }
-    }
+    
 }
