@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Setup Environment') {
             steps {
-                sh 'bash MovieApp/jenkins/setup.sh'
+                sh 'bash /MovieApp/jenkins/setup.sh'
             }
         }
         stage('Checkout') {
