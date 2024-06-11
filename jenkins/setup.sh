@@ -45,4 +45,3 @@ else
     echo "Bundler 2.0.1 is already installed"
 fi
 
-bundle install
