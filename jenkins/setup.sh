@@ -72,11 +72,11 @@ echo "Environment variables:"
 printenv
 
 # Install pg gem
-if ! gem list pg -i -v '1.2.3' > /dev/null 2>&1; then
-    echo "Installing pg gem version 1.2.3"
-    gem install pg -v '1.2.3' -- --with-pg-config=$(which pg_config)
+if ! gem list pg -i -v '1.5.6' > /dev/null 2>&1; then
+    echo "Installing pg gem version 1.5.6"
+    gem install pg -v '1.5.6' -- --with-pg-config=$(which pg_config)
 else
-    echo "pg gem version 1.2.3 is already installed"
+    echo "pg gem version 1.5.6 is already installed"
 fi
 
 # Ensure PostgreSQL service is running (optional if you need the server running)
