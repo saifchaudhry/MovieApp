@@ -9,9 +9,9 @@ if ! command -v rbenv &> /dev/null
 then
     echo "rbenv could not be found, installing..."
     sudo apt-get update && sudo apt-get install -y \
-    autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev \
-    postgresql postgresql-client postgresql-contrib libpq-dev
-
+    git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev \
+    libcurl4-openssl-dev libffi-dev postgresql-client-common postgresql-client libpq-dev 
+    
     # Install rbenv and ruby-build
     git clone https://github.com/rbenv/rbenv.git ~/.rbenv
     cd ~/.rbenv && src/configure && make -C src
