@@ -48,15 +48,15 @@ fi
 # Verify PostgreSQL libraries and headers are installed
 if ! dpkg -s libpq-dev > /dev/null 2>&1; then
     echo "libpq-dev is not installed. Installing..."
-    apt-get install -y libpq-dev
+    sudo apt-get install -y libpq-dev
 else
     echo "libpq-dev is already installed"
 fi
 
 # Ensure PostgreSQL service is running
-if ! service postgresql status > /dev/null 2>&1; then
+if ! sudo service postgresql status > /dev/null 2>&1; then
     echo "Starting PostgreSQL service..."
-    service postgresql start
+    sudo service postgresql start
 else
     echo "PostgreSQL service is already running"
 fi
