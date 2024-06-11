@@ -21,11 +21,11 @@ else
     rbenv global 2.6.6
 fi
 
-if gem list bundler -i -v 2.5.11 > /dev/null 2>&1; then
-    echo "Bundler 2.5.11 is installed"
+if gem list bundler -i -v 2.0.1 > /dev/null 2>&1; then
+    echo "Bundler 2.0.1 is installed"
 else
-    echo "Bundler 2.5.11 not found!"
-    gem install bundler -v 2.5.11
+    echo "Bundler 2.0.1 not found!"
+    gem install bundler -v 2.0.1
 fi
 
 bundle install
