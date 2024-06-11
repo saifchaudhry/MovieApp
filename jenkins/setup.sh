@@ -45,6 +45,7 @@ else
     echo "Bundler 2.0.1 is already installed"
 fi
 
+# Verify PostgreSQL libraries and headers are installed
 if ! dpkg -s libpq-dev > /dev/null 2>&1; then
     echo "libpq-dev is not installed. Installing..."
     sudo apt-get install -y libpq-dev
@@ -60,6 +61,24 @@ else
     echo "pg_config is available"
 fi
 
+# Export PostgreSQL binary path
+export PATH="/usr/lib/postgresql/12/bin:$PATH"
+
+# Check pg_config path
+echo "pg_config path: $(which pg_config)"
+
+# Display current environment variables for debugging
+echo "Environment variables:"
+printenv
+
+# Install pg gem
+if ! gem list pg -i -v '1.2.3' > /dev/null 2>&1; then
+    echo "Installing pg gem version 1.2.3"
+    gem install pg -v '1.2.3' -- --with-pg-config=$(which pg_config)
+else
+    echo "pg gem version 1.2.3 is already installed"
+fi
+
 # Ensure PostgreSQL service is running (optional if you need the server running)
 if ! sudo service postgresql status > /dev/null 2>&1; then
     echo "Starting PostgreSQL service..."
@@ -68,16 +87,3 @@ else
     echo "PostgreSQL service is already running"
 fi
 
-# Export PostgreSQL binary path
-export PATH="/usr/lib/postgresql/12/bin:$PATH"
-
-# Check pg_config path
-echo "pg_config path: $(which pg_config)"
-
-# Install pg gem
-if ! gem list pg -i -v '1.2.3' > /dev/null 2>&1; then
-    echo "Installing pg gem version 1.2.3"
-    gem install pg -v '1.2.3'
-else
-    echo "pg gem version 1.2.3 is already installed"
-fi
