@@ -44,3 +44,27 @@ if ! gem list bundler -i -v 2.0.1 > /dev/null 2>&1; then
 else
     echo "Bundler 2.0.1 is already installed"
 fi
+
+# Verify PostgreSQL libraries and headers are installed
+if ! dpkg -s libpq-dev > /dev/null 2>&1; then
+    echo "libpq-dev is not installed. Installing..."
+    apt-get install -y libpq-dev
+else
+    echo "libpq-dev is already installed"
+fi
+
+# Ensure PostgreSQL service is running
+if ! service postgresql status > /dev/null 2>&1; then
+    echo "Starting PostgreSQL service..."
+    service postgresql start
+else
+    echo "PostgreSQL service is already running"
+fi
+
+# Install pg gem
+if ! gem list pg -i -v '1.2.3' > /dev/null 2>&1; then
+    echo "Installing pg gem version 1.2.3"
+    gem install pg -v '1.2.3'
+else
+    echo "pg gem version 1.2.3 is already installed"
+fi
