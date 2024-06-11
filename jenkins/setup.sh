@@ -13,19 +13,19 @@ apt-get update && apt-get install -y \
 autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev \
 postgresql postgresql-client postgresql-contrib libpq-dev
 
-if  [ "$(ruby -v | awk '{print $2}' | cut -d 'p' -f 1)" == "3.1.0" ]; then
-    echo "Ruby 3.1.0 is installed"
+if  [ "$(ruby -v | awk '{print $2}' | cut -d 'p' -f 1)" == "2.6.6" ]; then
+    echo "Ruby 2.6.6 is installed"
 else
-    echo "Ruby 3.1.0 not found!"
-    rbenv install 3.1.0
-    rbenv global 3.1.0
+    echo "Ruby 2.6.6 not found!"
+    rbenv install 2.6.6
+    rbenv global 2.6.6
 fi
 
-if gem list bundler -i -v 2.0.1 > /dev/null 2>&1; then
-    echo "Bundler 2.0.1 is installed"
+if gem list bundler -i -v 2.5.11 > /dev/null 2>&1; then
+    echo "Bundler 2.5.11 is installed"
 else
-    echo "Bundler 2.0.1 not found!"
-    gem install bundler -v 2.0.1
+    echo "Bundler 2.5.11 not found!"
+    gem install bundler -v 2.5.11
 fi
 
 bundle install
