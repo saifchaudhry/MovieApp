@@ -9,6 +9,11 @@ pipeline {
         POSTGRES_PORT = '5432'
     }
     stages {
+        stage('Setup Environment') {
+            steps {
+                sh 'bash /path/to/your/setup.sh'
+            }
+        }
         stage('Checkout') {
             steps {
                 git 'https://github.com/saifchaudhry/MovieApp.git'
@@ -16,12 +21,20 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'bundle install'
+                sh '''
+                export PATH="$HOME/.rbenv/bin:$PATH"
+                eval "$(rbenv init -)"
+                rbenv global 2.6.6
+                bundle install
+                '''
             }
         }
         stage('Setup Database') {
             steps {
                 sh '''
+                export PATH="$HOME/.rbenv/bin:$PATH"
+                eval "$(rbenv init -)"
+                rbenv global 2.6.6
                 cp config/database.yml.ci config/database.yml
                 bundle exec rails db:create
                 bundle exec rails db:schema:load
@@ -30,9 +43,13 @@ pipeline {
         }
         stage('Run RSpec') {
             steps {
-                sh 'bundle exec rspec'
+                sh '''
+                export PATH="$HOME/.rbenv/bin:$PATH"
+                eval "$(rbenv init -)"
+                rbenv global 2.6.6
+                bundle exec rspec
+                '''
             }
         }
     }
-    
 }
