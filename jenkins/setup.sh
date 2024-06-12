@@ -11,7 +11,7 @@ then
     sudo apt-get update && sudo apt-get install -y \
     git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev \
     libcurl4-openssl-dev libffi-dev postgresql-client-common postgresql-client libpq-dev 
-    
+
     # Install rbenv and ruby-build
     git clone https://github.com/rbenv/rbenv.git ~/.rbenv
     cd ~/.rbenv && src/configure && make -C src
@@ -61,17 +61,6 @@ else
     echo "pg_config is available"
 fi
 
-# Export PostgreSQL binary path
-export PATH="/usr/lib/postgresql/12/bin:$PATH"
-
-# Ensure PostgreSQL service is running (optional if you need the server running)
-if ! sudo service postgresql status > /dev/null 2>&1; then
-    echo "Starting PostgreSQL service..."
-    sudo service postgresql start
-else
-    echo "PostgreSQL service is already running"
-fi
-
 # Locate pg_config and export its path
 PG_CONFIG_PATH=$(which pg_config)
 if [ -z "$PG_CONFIG_PATH" ]; then
@@ -82,20 +71,19 @@ else
     export PATH=$(dirname $PG_CONFIG_PATH):$PATH
 fi
 
-# Check pg_config path
-echo "pg_config path: $(which pg_config)"
-
 # Display current environment variables for debugging
 echo "Environment variables:"
 printenv
 
+# Debugging: Verify pg_config path
+echo "Using pg_config from: $PG_CONFIG_PATH"
+
 # Install pg gem
 if ! gem list pg -i -v '1.5.6' > /dev/null 2>&1; then
     echo "Installing pg gem version 1.5.6"
-    gem install pg -v '1.5.6' -- --with-pg-config=$(which pg_config)
+    gem install pg -v '1.5.6' -- --with-pg-config=$PG_CONFIG_PATH
 else
     echo "pg gem version 1.5.6 is already installed"
 fi
-
 
 
