@@ -28,12 +28,15 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 # Install Ruby 2.6.6
-if [ "$(ruby -v | awk '{print $2}' | cut -d 'p' -f 1)" != "2.6.6" ]; then
+if ! rbenv versions | grep -q 2.6.6; then
     echo "Installing Ruby 2.6.6"
     rbenv install 2.6.6
 else
     echo "Ruby 2.6.6 is already installed"
 fi
+
+# Set global Ruby version
+rbenv global 2.6.6
 
 # Install Bundler 2.0.1
 if ! gem list bundler -i -v 2.0.1 > /dev/null 2>&1; then
