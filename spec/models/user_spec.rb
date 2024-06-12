@@ -5,6 +5,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:favorites).dependent(:destroy) }
   it { should have_many(:favorite_movies).through(:favorites) }
   # Validation tests 
+
   
   # ensure columns username is present and unique
   it { should validate_presence_of(:username) }
