@@ -5,7 +5,8 @@ current_user=$(whoami)
 echo "Current user is: $current_user"
 
 # Check if rbenv is installed
-if [ ! -d "$HOME/.rbenv" ]; then
+if ! command -v rbenv &> /dev/null
+then
     sudo apt-get update && sudo apt-get install -y \
     autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev \
     postgresql postgresql-client postgresql-contrib libpq-dev nodejs
