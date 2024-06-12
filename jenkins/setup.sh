@@ -31,7 +31,6 @@ eval "$(rbenv init -)"
 if [ "$(ruby -v | awk '{print $2}' | cut -d 'p' -f 1)" != "2.6.6" ]; then
     echo "Installing Ruby 2.6.6"
     rbenv install 2.6.6
-    rbenv global 2.6.6
 else
     echo "Ruby 2.6.6 is already installed"
 fi
