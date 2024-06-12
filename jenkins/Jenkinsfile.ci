@@ -9,6 +9,13 @@ pipeline {
         POSTGRES_PORT = '5432'
     }
     stages {
+        stage('Cleanup') {
+            steps {
+                sh '''
+                rm -rf ~/.rbenv
+                '''
+            }
+        }
         stage('Checkout') {
             steps {
                 git 'https://github.com/saifchaudhry/MovieApp.git'
@@ -17,8 +24,10 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 script {
+                    // Check if the setup has already been done
                     if (!fileExists('setup_done')) {
                         sh 'bash jenkins/setup.sh'
+                        // Create a marker file to indicate setup is done
                         writeFile file: 'setup_done', text: 'setup done'
                         stash includes: 'setup_done', name: 'setup_done'
                     } else {
