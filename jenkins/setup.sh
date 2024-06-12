@@ -9,7 +9,7 @@ if ! command -v rbenv &> /dev/null
 then
     sudo apt-get update && sudo apt-get install -y \
     autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm6 libgdbm-dev \
-    postgresql postgresql-client postgresql-contrib libpq-dev
+    postgresql postgresql-client postgresql-contrib libpq-dev nodejs
     
     # Install rbenv and ruby-build
     git clone https://github.com/rbenv/rbenv.git ~/.rbenv
