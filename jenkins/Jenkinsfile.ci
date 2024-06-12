@@ -9,13 +9,6 @@ pipeline {
         POSTGRES_PORT = '5432'
     }
     stages {
-        stage('Cleanup') {
-            steps {
-                sh '''
-                rm -rf ~/.rbenv
-                '''
-            }
-        }
         stage('Checkout') {
             steps {
                 git 'https://github.com/saifchaudhry/MovieApp.git'
