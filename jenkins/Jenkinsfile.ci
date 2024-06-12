@@ -23,17 +23,7 @@ pipeline {
         }
         stage('Setup Environment') {
             steps {
-                script {
-                    // Check if the setup has already been done
-                    if (!fileExists('setup_done')) {
-                        sh 'bash jenkins/setup.sh'
-                        // Create a marker file to indicate setup is done
-                        writeFile file: 'setup_done', text: 'setup done'
-                        stash includes: 'setup_done', name: 'setup_done'
-                    } else {
-                        unstash 'setup_done'
-                    }
-                }
+                sh 'bash jenkins/setup.sh'
             }
         }
         stage('Install Dependencies') {
