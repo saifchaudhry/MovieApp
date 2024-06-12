@@ -64,6 +64,24 @@ fi
 # Export PostgreSQL binary path
 export PATH="/usr/lib/postgresql/12/bin:$PATH"
 
+# Ensure PostgreSQL service is running (optional if you need the server running)
+if ! sudo service postgresql status > /dev/null 2>&1; then
+    echo "Starting PostgreSQL service..."
+    sudo service postgresql start
+else
+    echo "PostgreSQL service is already running"
+fi
+
+# Locate pg_config and export its path
+PG_CONFIG_PATH=$(which pg_config)
+if [ -z "$PG_CONFIG_PATH" ]; then
+    echo "pg_config not found, ensure PostgreSQL development tools are installed."
+    exit 1
+else
+    echo "pg_config found at: $PG_CONFIG_PATH"
+    export PATH=$(dirname $PG_CONFIG_PATH):$PATH
+fi
+
 # Check pg_config path
 echo "pg_config path: $(which pg_config)"
 
@@ -79,11 +97,5 @@ else
     echo "pg gem version 1.5.6 is already installed"
 fi
 
-# Ensure PostgreSQL service is running (optional if you need the server running)
-if ! sudo service postgresql status > /dev/null 2>&1; then
-    echo "Starting PostgreSQL service..."
-    sudo service postgresql start
-else
-    echo "PostgreSQL service is already running"
-fi
+
 
