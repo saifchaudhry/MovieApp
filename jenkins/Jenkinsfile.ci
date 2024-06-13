@@ -12,7 +12,9 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
+                    githubNotify context: ‘Checkout’, status: ‘PENDING’, description: ‘Build is starting’
                     git 'https://github.com/saifchaudhry/MovieApp.git'
+                    githubNotify context: ‘Checkout’, status: ‘SUCCESS’, description: ‘Build succeeded’
                 }
             }
         }
