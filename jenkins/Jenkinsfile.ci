@@ -11,7 +11,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/saifchaudhry/MovieApp.git'
+                script {
+                    git 'https://github.com/saifchaudhry/MovieApp.git'
+                }
             }
         }
         stage('Setup Environment') {
