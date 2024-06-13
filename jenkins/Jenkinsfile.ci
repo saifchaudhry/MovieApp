@@ -16,7 +16,9 @@ pipeline {
         }
         stage('Setup Environment') {
             steps {
+                githubNotify context: 'Setup Environment', status: 'RUNNING', description: 'Setup Environment is starting'
                 sh 'bash jenkins/setup.sh'
+                githubNotify context: 'Setup Environment', status: 'SUCCESS', description: 'Setup Environment succeeded'
             }
         }
         stage('Install Dependencies') {
