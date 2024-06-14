@@ -12,9 +12,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    publishChecks name: ‘Checkout’, status: ‘in_progress’, conclusion: null, title: ‘Build started’
                     git 'https://github.com/saifchaudhry/MovieApp.git'
-                    publishChecks name: ‘Checkout’, status: ‘completed’, conclusion: ‘success’, title: ‘Build completed’
                 }
             }
         }
