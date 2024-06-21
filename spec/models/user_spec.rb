@@ -8,7 +8,6 @@ RSpec.describe User, type: :model do
   # ensure columns username is present and unique
 
   it { should validate_presence_of(:username) }
-
   subject { FactoryBot.build(:user) }
   it { should validate_uniqueness_of(:username) }
 end
