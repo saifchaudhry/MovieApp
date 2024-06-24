@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   # Association test
+  
   it { should have_many(:favorites).dependent(:destroy) }
   it { should have_many(:favorite_movies).through(:favorites) }
   # Validation tests 
