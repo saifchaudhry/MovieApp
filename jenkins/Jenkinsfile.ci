@@ -11,46 +11,56 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    git 'https://github.com/saifchaudhry/MovieApp.git'
+                withChecks('Checkout') {
+                    script {
+                        git 'https://github.com/saifchaudhry/MovieApp.git'
+                    }
                 }
             }
         }
         stage('Setup Environment') {
             steps {
-                sh 'bash jenkins/setup.sh'
+                withChecks('Setup Environment') {
+                    sh 'bash jenkins/setup.sh'
+                }
             }
         }
         stage('Install Dependencies') {
             steps {
-                sh '''
-                export PATH="$HOME/.rbenv/bin:$PATH"
-                eval "$(rbenv init -)"
-                rbenv global 2.6.6
-                bundle install
-                '''
+                withChecks('Install Dependencies') {
+                    sh '''
+                    export PATH="$HOME/.rbenv/bin:$PATH"
+                    eval "$(rbenv init -)"
+                    rbenv global 2.6.6
+                    bundle install
+                    '''
+                }
             }
         }
         stage('Setup Database') {
             steps {
-                sh '''
-                export PATH="$HOME/.rbenv/bin:$PATH"
-                eval "$(rbenv init -)"
-                rbenv global 2.6.6
-                cp config/database.yml.ci config/database.yml
-                bundle exec rails db:create
-                bundle exec rails db:schema:load
-                '''
+                withChecks('Setup Database') {
+                    sh '''
+                    export PATH="$HOME/.rbenv/bin:$PATH"
+                    eval "$(rbenv init -)"
+                    rbenv global 2.6.6
+                    cp config/database.yml.ci config/database.yml
+                    bundle exec rails db:create
+                    bundle exec rails db:schema:load
+                    '''
+                }
             }
         }
         stage('Run RSpec') {
             steps {
-                sh '''
-                export PATH="$HOME/.rbenv/bin:$PATH"
-                eval "$(rbenv init -)"
-                rbenv global 2.6.6
-                bundle exec rspec
-                '''
+                withChecks('Run RSpec') {
+                    sh '''
+                    export PATH="$HOME/.rbenv/bin:$PATH"
+                    eval "$(rbenv init -)"
+                    rbenv global 2.6.6
+                    bundle exec rspec
+                    '''
+                }
             }
         }
     }
