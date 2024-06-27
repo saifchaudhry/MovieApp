@@ -24,9 +24,9 @@ pipeline {
             steps {
                 withChecks('Checkout') {
                     script {
-                        setBuildStatus(“Build-started”, “PENDING”);
+
                         git 'https://github.com/saifchaudhry/MovieApp.git'
-                        setBuildStatus(“Build-complete”, “SUCCESS”);
+
                     }
                 }
             }
