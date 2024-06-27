@@ -41,3 +41,6 @@ https://movieapp3.herokuapp.com/
 
 # Screencast video for admin
 https://www.screencast.com/t/D9y6RT6Mi7
+
+#Embeddable Build Status Icon
+[![Build Status](http://159.223.184.183:8080/job/TestRspec/badge/icon)](http://159.223.184.183:8080/job/TestRspec/)
